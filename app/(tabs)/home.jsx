@@ -1,20 +1,30 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import Header from './../../components/Home/Header'
-import Banner from './../../components/Home/Banner'
-import AiFeaturedModel from '../../components/Home/AiFeaturedModel'
+import { View, FlatList } from 'react-native';
+import React from 'react';
+import Header from './../../components/Home/Header';
+import Banner from './../../components/Home/Banner';
+import AiFeaturedModel from '../../components/Home/AiFeaturedModel';
+import AiModels from '../../components/Home/AiModels';
 
 const Home = () => {
   return (
-    <View style={{
-      padding:20,
-      marginTop:20
-    }}>   
-      <Header />
-      <Banner />
-      <AiFeaturedModel />
-    </View>
-  )
-}
+    <FlatList
+      data={[1]} // Dummy data; adjust as needed
+      contentContainerStyle={{
+        padding: 20,
+        marginTop: 20,
+      }}
+      renderItem={({ item }) => (
+        <View>
+          <Header />
+          <Banner />
+          <AiFeaturedModel />
+          <AiModels type={'avatar'} />
+          <AiModels type={'style'} />
+          <View style={{ height: 100 }} />
+        </View>
+      )}
+    />
+  );
+};
 
-export default Home
+export default Home;

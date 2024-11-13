@@ -15,12 +15,15 @@ export default function LoginScreen() {
   
     const onPress = React.useCallback(async () => {
       try {
+
+        const clerk = useClerk();
+        await clerk.signOut();
         const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
           redirectUrl: Linking.createURL('/(tabs)/home', { scheme: 'myapp' }),
         })
   
         if (createdSessionId) {
-            console.log("CREATEd SESSION ID:", createdSessionId)
+            console.log("CREATED SESSION ID:", createdSessionId)
             router.replace('../(tabs)/home')
         } else {
           // Use signIn or signUp for next steps such as MFA

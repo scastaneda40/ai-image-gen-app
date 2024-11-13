@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Index() {
   const {user, isLoaded}=useUser()
-  console.log('User:', user);
+  console.log('current User:', user);
 
   useEffect(()=>{
     checkNavLoader()
