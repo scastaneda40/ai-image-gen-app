@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { ColorSpace } from 'react-native-reanimated';
 import Colors from './../../constants/Colors';
 import {useUser} from '@clerk/clerk-expo';
-import GloablApi from '../../services/GloablApi';
+import GlobalApi from '../../services/GlobalApi';
 import { UserDetailContext } from '../../context/UserDetailContext';
 
 const TabLayout = () => {
@@ -17,7 +17,7 @@ const TabLayout = () => {
     user&&VerifyUser()
   }, [user])
   const VerifyUser = async () => {
-      const result = await GloablApi.GetUserInfo(user?.primaryEmailAddress?.emailAddress);
+      const result = await GlobalApi.GetUserInfo(user?.primaryEmailAddress?.emailAddress);
       console.log(result.data.data)
 
       if(result.data.data.length!=0)
@@ -31,7 +31,7 @@ const TabLayout = () => {
             userEmail:user?.primaryEmailAddress?.emailAddress,
             userName:user?.fullName 
         }
-        const result = await GloablApi.CreateNewUser(data);
+        const result = await GlobalApi.CreateNewUser(data);
         console.log(result?.data.data);
         setUserDetail(result.data.data[0])
       }catch(e){
@@ -46,19 +46,19 @@ const TabLayout = () => {
         <Tabs.Screen name='home'
         options={{
             title:'Home',
-            tabBarIcon:({color})=><Ionicons name="home" size={24} color="black" color={color} />
+            tabBarIcon:({color})=><Ionicons name="home" size={24} color={color} />
         }}
         />
         <Tabs.Screen name='collection' 
         options={{
             title:'Home',
-            tabBarIcon:({color})=><Ionicons name="folder-open" size={24} color="black" color={color} />
+            tabBarIcon:({color})=><Ionicons name="folder-open" size={24}  color={color} />
         }}
         />
         <Tabs.Screen name='profile' 
         options={{
             title:'Home',
-            tabBarIcon:({color})=><Ionicons name="people-circle" size={24} color="black" color={color} />
+            tabBarIcon:({color})=><Ionicons name="people-circle" size={24} color={color} />
         }}
         />
     </Tabs>
