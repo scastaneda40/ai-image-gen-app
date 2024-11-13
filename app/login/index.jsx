@@ -1,8 +1,35 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
+import * as WebBrowser from 'expo-web-browser'
 import Colors from './../../constants/Colors'
+import { Link, useRouter } from 'expo-router'
+import { useOAuth, useUser } from '@clerk/clerk-expo'
+import * as Linking from 'expo-linking'
+import { TouchableOpacity } from 'react-native'
 
 export default function LoginScreen() {
+    useWarmUpBrowser()
+
+    const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' })
+    const { user } = useUser();
+  
+    const onPress = React.useCallback(async () => {
+      try {
+        const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
+          redirectUrl: Linking.createURL('/(tabs)/home', { scheme: 'myapp' }),
+        })
+  
+        if (createdSessionId) {
+            console.log("CREATEd SESSION ID:", createdSessionId)
+            router.replace('../(tabs)/home')
+        } else {
+          // Use signIn or signUp for next steps such as MFA
+        }
+      } catch (err) {
+        console.error('OAuth error', err)
+      }
+    }, [])
+  
   return (
     <View>
       <Image source={require('./../../assets/images/login.jpg')} 
@@ -24,13 +51,13 @@ export default function LoginScreen() {
               textAlign:'center',
               marginTop:15
           }}>Create AI Art in Just One Click</Text>
-       <View style={styles.button}>
+       <TouchableOpacity onPress={onPress} style={styles.button}>
           <Text style={{
               textAlign:'center',
               color:'white',
               fontSize:17
               }}>Continue</Text>
-      </View>
+      </TouchableOpacity>
 
       <Text style={{
           textAlign:'center',
@@ -60,3 +87,16 @@ const styles = StyleSheet.create({
         marginTop:20
     }
 })
+
+export const useWarmUpBrowser = () => {
+    React.useEffect(() => {
+      // Warm up the android browser to improve UX
+      // https://docs.expo.dev/guides/authentication/#improving-user-experience
+      void WebBrowser.warmUpAsync()
+      return () => {
+        void WebBrowser.coolDownAsync()
+      }
+    }, [])
+  }
+  
+  WebBrowser.maybeCompleteAuthSession()
