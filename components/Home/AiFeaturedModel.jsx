@@ -1,11 +1,13 @@
-import { View, Text, FlatList, Image } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 import GlobalApi from '../../services/GlobalApi';
 import Colors from '../../constants/Colors'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'expo-router'
 
 const AiFeaturedModel = () => {
 
     const [aiModelList, setAiModelList] = useState([]);
+    const router = useRouter()
 
     useEffect(() => {
         GetAiModelFeaturedList();
@@ -19,6 +21,14 @@ const AiFeaturedModel = () => {
 
         setAiModelList(result.data.data)
     }
+
+    const OnClickAiModel = (item) => {
+        router?.push({
+            pathname:'FormInput',
+            params:item
+        })
+    }
+
   return (
     <View style={{
         marginTop:20
@@ -34,7 +44,7 @@ const AiFeaturedModel = () => {
         style={{marginTop:7}}
         renderItem={({item, index})=> (
             
-            <View style={{
+            <TouchableOpacity onPress={()=>OnClickAiModel(item)} style={{
                 flex:1,
                 alignItems:'center'
             }}>
@@ -57,7 +67,7 @@ const AiFeaturedModel = () => {
                     color:Colors.PRIMARY,
                     marginTop:2
                 }}>{item?.name}</Text>
-            </View>   
+            </TouchableOpacity>   
         )}
       />
     </View>

@@ -1,12 +1,14 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GlobalApi from '../../services/GlobalApi';
 import { FlatList } from 'react-native';
+import { useRouter } from 'expo-router';
 import Colors from '../../constants/Colors';
 
 export default function AiModels({type}) {
 
     const [aiModelList, setAiModelList] = useState()
+    const router = useRouter()
 
     useEffect(() => {
         console.log('type param', type)
@@ -25,7 +27,13 @@ export default function AiModels({type}) {
         }
       };
       
-      
+      const OnClickModel = (item) => {
+        router?.push({
+            pathname:'FormInput',
+            params:item
+        })
+      }
+
   return (
     <View>
       <Text style={{
@@ -41,7 +49,7 @@ export default function AiModels({type}) {
         showsHorizontalScrollIndicator={false}
         nestedScrollEnabled={true}
         renderItem={({item, index})=>(
-            <View style={{
+            <TouchableOpacity onPress={()=>OnClickModel(item)} style={{
                 marginRight:15
             }}>
                 <Image source={{uri:item?.banner?.url}} 
@@ -60,7 +68,7 @@ export default function AiModels({type}) {
                     fontWeight:'medium',
                     fontSize:15
                 }}>{item.name}</Text>
-            </View>    
+            </TouchableOpacity>    
         )}
       />
     </View>

@@ -8,7 +8,7 @@ import AiModels from '../../components/Home/AiModels';
 const Home = () => {
   return (
     <FlatList
-      data={[1]} // Dummy data; adjust as needed
+      data={[1]} 
       contentContainerStyle={{
         padding: 20,
         marginTop: 20,
