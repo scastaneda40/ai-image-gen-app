@@ -9,6 +9,8 @@ export default function FormInput() {
     const params = useLocalSearchParams();
     const navigation = useNavigation();
     const [aiModel, setAiModel] = useState();
+    const [userInput, setUserInput] = useState();
+    const [userImage, setUserImage] = useState();
 
     useEffect(() => {
         console.log("Params:", params)
@@ -18,6 +20,10 @@ export default function FormInput() {
             headerTitle:params?.name
         })
     },[])
+
+    const OnGenerate = () => {
+        console.log(userImage);
+    }
 
   return (
     <View style={{
@@ -31,13 +37,16 @@ export default function FormInput() {
       }}>{aiModel?.name}</Text>
 
       <View>
-        {aiModel?.userImageUpload!= "true" ? <TextInput_ /> : <ImageUploadComponent />} 
+        {aiModel?.userImageUpload!= "true" ? <TextInput_ userInputValue={(value)=>setUserInput(value)} /> : 
+            <ImageUploadComponent uploadedImage={(value)=>setUserImage(value)} />} 
         <Text style={{
             color:Colors.GRAY,
             marginVertical:10
         }}>NOTE: 1 Credit will be used to generate AI Image</Text>
-        <TouchableOpacity style={{
-            padding:12,
+        <TouchableOpacity 
+        onPress={()=>OnGenerate()}
+        style={{
+            padding:15,
             backgroundColor:Colors.PRIMARY,
             borderRadius:15,
             marginVertical:15,
